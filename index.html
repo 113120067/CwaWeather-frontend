@@ -15,6 +15,7 @@
 
     <style>
         :root {
+            /* 動森主題 */
             --ac-green: #7DE1A9;
             --ac-bg-pattern: #8FD8AF;
             --ac-cream: #FFFEF2;
@@ -23,6 +24,36 @@
             --ac-blue: #4FB5D9;
             --ac-dark: #58504A;
             --ac-card-border: #E6E0C8;
+            
+            /* 哆啦A夢主題 */
+            --dr-blue: #0096D6;
+            --dr-light-blue: #6BC5E8;
+            --dr-red: #E6002D;
+            --dr-yellow: #FFD700;
+            --dr-white: #FFFFFF;
+            --dr-cream: #FFF9E6;
+            --dr-dark: #2C3E50;
+            --dr-pink: #FFB6C1;
+            
+            /* 當前主題（預設動森）*/
+            --primary-color: var(--ac-green);
+            --bg-color: var(--ac-green);
+            --card-bg: var(--ac-cream);
+            --accent-color: var(--ac-yellow);
+            --text-color: var(--ac-brown);
+            --secondary-color: var(--ac-blue);
+            --dark-color: var(--ac-dark);
+        }
+        
+        /* 哆啦A夢主題 */
+        body.doraemon-theme {
+            --primary-color: var(--dr-blue);
+            --bg-color: var(--dr-light-blue);
+            --card-bg: var(--dr-cream);
+            --accent-color: var(--dr-red);
+            --text-color: var(--dr-dark);
+            --secondary-color: var(--dr-yellow);
+            --dark-color: var(--dr-dark);
         }
 
         * {
@@ -34,12 +65,13 @@
 
         body {
             font-family: 'Zen Maru Gothic', sans-serif;
-            background-color: var(--ac-green);
+            background-color: var(--bg-color);
             /* 更細緻的斜紋背景 */
             background-image:
                 repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255, 255, 255, 0.2) 20px, rgba(255, 255, 255, 0.2) 40px);
             min-height: 100vh;
-            color: var(--ac-dark);
+            color: var(--text-color);
+            transition: background-color 0.3s ease;
             /* 防止 iOS 左右滑動 */
             overflow-x: hidden;
             padding-bottom: 20px;
@@ -59,8 +91,8 @@
         }
 
         .location-pill {
-            background: var(--ac-yellow);
-            color: var(--ac-brown);
+            background: var(--accent-color);
+            color: var(--text-color);
             padding: 5px 15px;
             border-radius: 20px;
             font-weight: 900;
@@ -68,6 +100,12 @@
             transform: rotate(-2deg);
             border: 2px solid white;
             box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        body.doraemon-theme .location-pill {
+            transform: rotate(0deg);
+            border-radius: 25px;
         }
 
         .update-pill {
@@ -106,8 +144,32 @@
         }
 
         .city-btn.active {
-            background: var(--ac-yellow);
+            background: var(--accent-color);
             transform: rotate(-2deg);
+        }
+        
+        body.doraemon-theme .city-btn.active {
+            transform: rotate(0deg);
+        }
+        
+        /* 主題切換按鈕 */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .theme-toggle:active {
+            transform: scale(0.9);
         }
 
         .container {
@@ -119,7 +181,7 @@
 
         /* === 核心：今日焦點卡片 === */
         .hero-card {
-            background: var(--ac-cream);
+            background: var(--card-bg);
             border-radius: 35px;
             padding: 30px 25px;
             text-align: center;
@@ -127,6 +189,12 @@
             border: 4px solid white;
             margin-bottom: 25px;
             position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        body.doraemon-theme .hero-card {
+            border-radius: 20px;
+            border: 3px solid var(--dr-blue);
         }
 
         /* 像動森的對話氣泡 */
@@ -135,13 +203,19 @@
             top: -15px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--ac-blue);
+            background: var(--secondary-color);
             color: white;
             padding: 5px 20px;
             border-radius: 20px;
             font-weight: bold;
             border: 3px solid white;
             box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        body.doraemon-theme .hero-period {
+            background: var(--dr-red);
+            border-radius: 15px;
         }
 
         .hero-temp-container {
@@ -173,8 +247,9 @@
         .hero-temp {
             font-size: 4.5rem;
             font-weight: 900;
-            color: var(--ac-brown);
+            color: var(--text-color);
             line-height: 1;
+            transition: color 0.3s ease;
         }
 
         .hero-desc {
@@ -211,9 +286,10 @@
         .advice-text {
             font-size: 1.4rem;
             font-weight: 900;
-            color: var(--ac-brown);
+            color: var(--text-color);
             margin: 5px 0;
             line-height: 1.2;
+            transition: color 0.3s ease;
         }
 
         /* === 稍後預報：橫向滑動區 === */
@@ -252,7 +328,7 @@
         }
 
         .mini-time {
-            background: var(--ac-green);
+            background: var(--primary-color);
             color: white;
             padding: 3px 10px;
             border-radius: 10px;
@@ -260,6 +336,12 @@
             display: inline-block;
             margin-bottom: 10px;
             font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        body.doraemon-theme .mini-time {
+            background: var(--dr-blue);
+            border-radius: 5px;
         }
 
         .mini-icon {
@@ -270,7 +352,8 @@
         .mini-temp {
             font-size: 1.2rem;
             font-weight: 800;
-            color: var(--ac-dark);
+            color: var(--dark-color);
+            transition: color 0.3s ease;
         }
 
         /* Loading 畫面 */
@@ -280,12 +363,13 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: var(--ac-green);
+            background: var(--bg-color);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 999;
+            transition: background-color 0.3s ease;
         }
     </style>
 </head>
@@ -297,7 +381,10 @@
     </div>
     <div class="status-bar">
         <div class="location-pill" id="currentLocation">📍 台北</div>
-        <div id="updateTime" class="update-pill">更新中...</div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="theme-toggle" id="themeToggle" title="切換主題">🍃</button>
+            <div id="updateTime" class="update-pill">更新中...</div>
+        </div>
     </div>
 
     <div class="city-selector">
@@ -493,9 +580,31 @@
                 });
             });
         }
+        
+        // 主題切換功能
+        function setupThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            let isDoraemon = false;
+            
+            themeToggle.addEventListener('click', () => {
+                isDoraemon = !isDoraemon;
+                
+                if (isDoraemon) {
+                    body.classList.add('doraemon-theme');
+                    themeToggle.textContent = '🔵';
+                    themeToggle.title = '切換至動森主題';
+                } else {
+                    body.classList.remove('doraemon-theme');
+                    themeToggle.textContent = '🍃';
+                    themeToggle.title = '切換至哆啦A夢主題';
+                }
+            });
+        }
 
         document.addEventListener("DOMContentLoaded", () => {
             setupCityButtons();
+            setupThemeToggle();
             fetchWeather();
         });
     </script>
