@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>森森天氣</title>
+    <title id="pageTitle">森森天氣</title>
     <link rel="icon" type="image/png" href="./icon-v2.png">
     <link rel="apple-touch-icon" href="./icon-v2.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./icon-v2.png">
@@ -28,7 +28,7 @@
             /* 哆啦A夢主題 */
             --dr-blue: #0096D6;
             --dr-light-blue: #6BC5E8;
-            --dr-red: #E6002D;
+            --dr-red: #FF6B6B;
             --dr-yellow: #FFD700;
             --dr-white: #FFFFFF;
             --dr-cream: #FFF9E6;
@@ -171,6 +171,23 @@
         .theme-toggle:active {
             transform: scale(0.9);
         }
+        
+        /* 主標題 */
+        .main-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+            margin: 0;
+            transition: all 0.3s ease;
+        }
+        
+        body.doraemon-theme .main-title {
+            color: var(--dr-red);
+            text-shadow: 2px 2px 0 var(--dr-yellow), 4px 4px 0 rgba(0, 0, 0, 0.2);
+        }
 
         .container {
             padding: 20px;
@@ -231,6 +248,18 @@
             filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.1));
             animation: bounce 3s infinite;
         }
+        
+        body.doraemon-theme .hero-icon {
+            background: white;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid var(--dr-blue);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
 
         @keyframes bounce {
 
@@ -277,10 +306,28 @@
             padding: 10px;
             border-radius: 20px;
         }
+        
+        body.doraemon-theme .advice-item {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+        }
 
         .advice-icon {
             font-size: 2rem;
             margin-bottom: 5px;
+        }
+        
+        body.doraemon-theme .advice-icon {
+            background: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 5px;
+            border: 3px solid var(--dr-blue);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
         }
 
         .advice-text {
@@ -348,6 +395,19 @@
             font-size: 2.5rem;
             margin: 5px 0;
         }
+        
+        body.doraemon-theme .mini-icon {
+            background: white;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px auto;
+            border: 3px solid var(--dr-blue);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
 
         .mini-temp {
             font-size: 1.2rem;
@@ -386,6 +446,8 @@
             <div id="updateTime" class="update-pill">更新中...</div>
         </div>
     </div>
+
+    <h1 class="main-title" id="mainTitle">🍃 森森天氣 🍃</h1>
 
     <div class="city-selector">
         <button class="city-btn active" data-city="taipei">🏙️ 台北</button>
@@ -585,6 +647,8 @@
         function setupThemeToggle() {
             const themeToggle = document.getElementById('themeToggle');
             const body = document.body;
+            const mainTitle = document.getElementById('mainTitle');
+            const pageTitle = document.getElementById('pageTitle');
             let isDoraemon = false;
             
             themeToggle.addEventListener('click', () => {
@@ -594,10 +658,14 @@
                     body.classList.add('doraemon-theme');
                     themeToggle.textContent = '🔵';
                     themeToggle.title = '切換至動森主題';
+                    mainTitle.textContent = '🔵 多拉風格 🔴';
+                    pageTitle.textContent = '多拉風格';
                 } else {
                     body.classList.remove('doraemon-theme');
                     themeToggle.textContent = '🍃';
                     themeToggle.title = '切換至哆啦A夢主題';
+                    mainTitle.textContent = '🍃 森森天氣 🍃';
+                    pageTitle.textContent = '森森天氣';
                 }
             });
         }
