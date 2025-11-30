@@ -78,6 +78,38 @@
             border-radius: 12px;
         }
 
+        /* 城市選擇按鈕 */
+        .city-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            padding: 15px 20px;
+            flex-wrap: wrap;
+        }
+
+        .city-btn {
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--ac-brown);
+            border: 2px solid white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .city-btn:active {
+            transform: scale(0.95);
+            box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .city-btn.active {
+            background: var(--ac-yellow);
+            transform: rotate(-2deg);
+        }
+
         .container {
             padding: 20px;
             max-width: 600px;
@@ -264,8 +296,14 @@
         <p style="color: white; font-weight: bold; margin-top: 20px;">正在觀測雲的流動...</p>
     </div>
     <div class="status-bar">
-        <div class="location-pill">📍 高雄</div>
+        <div class="location-pill" id="currentLocation">📍 台北</div>
         <div id="updateTime" class="update-pill">更新中...</div>
+    </div>
+
+    <div class="city-selector">
+        <button class="city-btn active" data-city="taipei">🏙️ 台北</button>
+        <button class="city-btn" data-city="newtaipei">🌆 新北</button>
+        <button class="city-btn" data-city="yilan">🏞️ 宜蘭</button>
     </div>
 
     <div class="container" id="mainContent" style="display: none;">
@@ -280,7 +318,14 @@
     </div>
 
     <script>
-        const API_URL = "https://cwa-backend-api.zeabur.app/api/weather/kaohsiung";
+        const API_BASE_URL = "https://113120067-cwa-backend.zeabur.app/api/weather";
+        let currentCity = "taipei";
+
+        const cityNames = {
+            "taipei": "台北",
+            "newtaipei": "新北",
+            "yilan": "宜蘭"
+        };
 
         function getWeatherIcon(weather) {
             if (!weather) return "🌤️";
@@ -392,20 +437,31 @@
             document.getElementById('updateTime').textContent = `${month}月${date}日 ${days[dayIndex]}`;
         }
 
-        async function fetchWeather() {
+        async function fetchWeather(city = currentCity, showLoading = true) {
             try {
+                const apiUrl = `${API_BASE_URL}/${city}`;
+                
+                if (showLoading) {
+                    document.getElementById('loading').style.display = 'flex';
+                    document.getElementById('mainContent').style.display = 'none';
+                }
+
                 // 1. 定義「最低等待時間」：1500 毫秒 (1.5秒)
-                const delayPromise = new Promise(resolve => setTimeout(resolve, 1500));
+                const delayPromise = new Promise(resolve => setTimeout(resolve, showLoading ? 1500 : 300));
 
                 // 2. 定義「抓取資料」的工作
-                const fetchPromise = fetch(API_URL).then(res => res.json());
+                const fetchPromise = fetch(apiUrl).then(res => res.json());
 
                 // 3. Promise.all 會等待「兩個都完成」才會往下走
                 // result 陣列裡，第一個是 delay 的結果(沒用到)，第二個是 api 的 json 資料
                 const [_, json] = await Promise.all([delayPromise, fetchPromise]);
 
                 if (json.success) {
+                    currentCity = city;
                     renderWeather(json.data);
+                    
+                    // 更新地點顯示
+                    document.getElementById('currentLocation').textContent = `📍 ${cityNames[city]}`;
 
                     // 資料處理好後，隱藏 Loading，顯示主畫面
                     document.getElementById('loading').style.display = 'none';
@@ -416,10 +472,32 @@
             } catch (e) {
                 console.error(e);
                 alert("天氣資料讀取失敗，狸克把網路線咬斷了！");
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
             }
         }
 
-        document.addEventListener("DOMContentLoaded", fetchWeather);
+        // 城市按鈕點擊事件
+        function setupCityButtons() {
+            const buttons = document.querySelectorAll('.city-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const city = btn.dataset.city;
+                    
+                    // 更新按鈕狀態
+                    buttons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // 載入該城市天氣
+                    fetchWeather(city, false);
+                });
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setupCityButtons();
+            fetchWeather();
+        });
     </script>
 </body>
 
