@@ -1,0 +1,40 @@
+/* 三種替代方案：把其中一個貼到 :root 或直接替換 index.html 中 --dr-red */
+
+/* 方案 A — Soft Rose (柔和粉紅): 溫柔、療癒、最不突兀 */
+:root {
+  --dr-red: #FF9AA2; /* 柔和粉紅 (較低飽和度) */
+  --dr-accent-alpha: rgba(255,154,162,0.12); /* 半透明用於背景/漸層 */
+}
+
+/* 方案 B — Coral Warm (珊瑚暖色): 活潑但不刺眼 */
+:root.option-b {
+  --dr-red: #FF8A65; /* 珊瑚系，溫暖且活潑 */
+  --dr-accent-alpha: rgba(255,138,101,0.14);
+}
+
+/* 方案 C — Muted Rose (灰化玫瑰): 稍正式 / 成熟的感覺 */
+:root.option-c {
+  --dr-red: #E57373; /* 去飽和的玫瑰紅，視覺平衡 */
+  --dr-accent-alpha: rgba(229,115,115,0.10);
+}
+
+/* 小樣式建議（不需要改很多，透過變數即可生效） */
+.hero-period {
+  /* 原本使用 --secondary-color 或 --dr-red，建議保留 text 白色以維持對比 */
+  color: #fff;
+  /* 若想要更柔和，改用漸層或半透明背景 */
+  /* background: linear-gradient(90deg, var(--dr-blue), var(--dr-red)); */
+  /* 或： */
+  /* background: var(--dr-accent-alpha); border: 2px solid rgba(255,255,255,0.6); */
+}
+
+/* 若要使用半透明疊層，讓紅色看起來更柔和 */
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--dr-accent-alpha);
+  border-radius: inherit;
+  mix-blend-mode: overlay; /* optional: 柔化效果 */
+}

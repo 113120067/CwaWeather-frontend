@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title id="pageTitle">森森天氣</title>
+    <title id="pageTitle">多拉風格</title>
     <link rel="icon" type="image/png" href="./icon-v2.png">
     <link rel="apple-touch-icon" href="./icon-v2.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./icon-v2.png">
@@ -15,7 +15,7 @@
 
     <style>
         :root {
-            /* 動森主題 */
+            /* 動森主題（備用變數） */
             --ac-green: #7DE1A9;
             --ac-bg-pattern: #8FD8AF;
             --ac-cream: #FFFEF2;
@@ -25,28 +25,20 @@
             --ac-dark: #58504A;
             --ac-card-border: #E6E0C8;
             
-            /* 哆啦A夢主題 */
+            /* 哆啦A夢主題（預設）*/
             --dr-blue: #0096D6;
             --dr-light-blue: #6BC5E8;
-            --dr-red: #FF6B6B;
+            /* Soft Rose 替代鮮紅（方案 A）*/
+            --dr-red: #FF9AA2; /* <- 調整為柔和粉紅 */
             --dr-yellow: #FFD700;
             --dr-white: #FFFFFF;
             --dr-cream: #FFF9E6;
             --dr-dark: #2C3E50;
             --dr-pink: #FFB6C1;
+            /* 半透明疊層用色，讓粉紅更柔和 */
+            --dr-accent-alpha: rgba(255,154,162,0.12);
             
-            /* 當前主題（預設動森）*/
-            --primary-color: var(--ac-green);
-            --bg-color: var(--ac-green);
-            --card-bg: var(--ac-cream);
-            --accent-color: var(--ac-yellow);
-            --text-color: var(--ac-brown);
-            --secondary-color: var(--ac-blue);
-            --dark-color: var(--ac-dark);
-        }
-        
-        /* 哆啦A夢主題 */
-        body.doraemon-theme {
+            /* 當前主題（預設改為哆啦A夢）*/
             --primary-color: var(--dr-blue);
             --bg-color: var(--dr-light-blue);
             --card-bg: var(--dr-cream);
@@ -54,6 +46,17 @@
             --text-color: var(--dr-dark);
             --secondary-color: var(--dr-yellow);
             --dark-color: var(--dr-dark);
+        }
+        
+        /* ac-theme（動森）覆寫：當 body 加上 .ac-theme 時套用動森配色 */
+        body.ac-theme {
+            --primary-color: var(--ac-green);
+            --bg-color: var(--ac-green);
+            --card-bg: var(--ac-cream);
+            --accent-color: var(--ac-yellow);
+            --text-color: var(--ac-brown);
+            --secondary-color: var(--ac-blue);
+            --dark-color: var(--ac-dark);
         }
 
         * {
@@ -103,7 +106,7 @@
             transition: all 0.3s ease;
         }
         
-        body.doraemon-theme .location-pill {
+        body.ac-theme .location-pill {
             transform: rotate(0deg);
             border-radius: 25px;
         }
@@ -148,7 +151,7 @@
             transform: rotate(-2deg);
         }
         
-        body.doraemon-theme .city-btn.active {
+        body.ac-theme .city-btn.active {
             transform: rotate(0deg);
         }
         
@@ -184,7 +187,7 @@
             transition: all 0.3s ease;
         }
         
-        body.doraemon-theme .main-title {
+        body.ac-theme .main-title {
             color: var(--dr-red);
             text-shadow: 2px 2px 0 var(--dr-yellow), 4px 4px 0 rgba(0, 0, 0, 0.2);
         }
@@ -207,34 +210,56 @@
             margin-bottom: 25px;
             position: relative;
             transition: all 0.3s ease;
+            overflow: hidden;
         }
         
-        body.doraemon-theme .hero-card {
+        /* 半透明疊層，讓粉紅看起來更柔和 */
+        .hero-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: var(--dr-accent-alpha);
+            border-radius: inherit;
+            mix-blend-mode: overlay;
+        }
+
+        body.ac-theme .hero-card {
             border-radius: 20px;
             border: 3px solid var(--dr-blue);
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><pattern id="doraemon-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="30" fill="%230096D6" opacity="0.1"/><circle cx="50" cy="50" r="15" fill="%23FFD700" opacity="0.15"/></pattern></defs><rect width="200" height="200" fill="url(%23doraemon-pattern)"/></svg>');
+            /* 如果你想放 Doraemon 背景圖案，請把下面的 data URL 補回完整內容 */
+            /* background-image: url('data:image/svg+xml,...'); */
             background-size: 150px 150px;
         }
 
-        /* 像動森的對話氣泡 */
-        .hero-period {
+        /* sticker（裝飾貼紙） */
+        .sticker {
             position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--secondary-color);
-            color: white;
-            padding: 5px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            border: 3px solid white;
-            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            width: 84px;
+            height: 84px;
+            pointer-events: none;
+            opacity: 0.96;
+            transform-origin: center;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+            z-index: 3;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.08));
+            border-radius: 12px;
+            background: rgba(255,255,255,0.06);
         }
-        
-        body.doraemon-theme .hero-period {
-            background: var(--dr-red);
-            border-radius: 15px;
+        .sticker.top-left { top: 12px; left: 12px; transform: rotate(-12deg) scale(0.98); }
+        .sticker.bottom-right { bottom: 12px; right: 12px; transform: rotate(8deg) scale(0.95); }
+
+        /* hero 圖示改成圖片 */
+        .hero-icon-img {
+            width: 120px;
+            height: 120px;
+            display: inline-block;
+            border-radius: 50%;
+            background: white;
+            padding: 6px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+            object-fit: contain;
+            z-index: 2;
         }
 
         .hero-temp-container {
@@ -243,24 +268,6 @@
             align-items: center;
             gap: 10px;
             margin: 15px 0;
-        }
-
-        .hero-icon {
-            font-size: 5rem;
-            filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.1));
-            animation: bounce 3s infinite;
-        }
-        
-        body.doraemon-theme .hero-icon {
-            background: white;
-            border-radius: 50%;
-            width: 120px;
-            height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 4px solid var(--dr-blue);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         @keyframes bounce {
@@ -309,7 +316,7 @@
             border-radius: 20px;
         }
         
-        body.doraemon-theme .advice-item {
+        body.ac-theme .advice-item {
             background: rgba(255, 255, 255, 0.7);
             border-radius: 15px;
         }
@@ -319,7 +326,7 @@
             margin-bottom: 5px;
         }
         
-        body.doraemon-theme .advice-icon {
+        body.ac-theme .advice-icon {
             background: white;
             border-radius: 50%;
             width: 60px;
@@ -388,7 +395,7 @@
             transition: all 0.3s ease;
         }
         
-        body.doraemon-theme .mini-time {
+        body.ac-theme .mini-time {
             background: var(--dr-blue);
             border-radius: 5px;
         }
@@ -398,7 +405,7 @@
             margin: 5px 0;
         }
         
-        body.doraemon-theme .mini-icon {
+        body.ac-theme .mini-icon {
             background: white;
             border-radius: 50%;
             width: 70px;
@@ -433,6 +440,26 @@
             z-index: 999;
             transition: background-color 0.3s ease;
         }
+
+        /* page-floating（可選，要時可啟用） */
+        .page-floating {
+          position: fixed;
+          right: 12px;
+          bottom: 12px;
+          width: 72px;
+          height: 72px;
+          opacity: 0.95;
+          z-index: 40;
+          transform: rotate(-8deg);
+          pointer-events: none;
+        }
+
+        /* 響應式調整 */
+        @media (max-width: 420px) {
+          .sticker { width: 56px; height: 56px; }
+          .hero-icon-img { width: 80px; height: 80px; }
+          .hero-temp { font-size: 3.2rem; }
+        }
     </style>
 </head>
 
@@ -444,12 +471,13 @@
     <div class="status-bar">
         <div class="location-pill" id="currentLocation">📍 台北</div>
         <div style="display: flex; gap: 10px; align-items: center;">
-            <button class="theme-toggle" id="themeToggle" title="切換主題">🍃</button>
+            <!-- 預設為哆啦A夢（:root 已設定為哆啦A夢），按鈕顯示切換到動森 -->
+            <button class="theme-toggle" id="themeToggle" title="切換至動森主題">🔵</button>
             <div id="updateTime" class="update-pill">更新中...</div>
         </div>
     </div>
 
-    <h1 class="main-title" id="mainTitle">🍃 森森天氣 🍃</h1>
+    <h1 class="main-title" id="mainTitle">🔵 多拉風格 🔴</h1>
 
     <div class="city-selector">
         <button class="city-btn active" data-city="taipei">🏙️ 台北</button>
@@ -530,9 +558,13 @@
 
             document.getElementById('heroCard').innerHTML = `
                         <div class="hero-card">
+                            <!-- 裝飾貼紙（純裝飾，aria-hidden） -->
+                            <img src="./assets/blue-buddy.svg" class="sticker top-left" alt="" aria-hidden="true" loading="lazy">
+                            <img src="./assets/blue-buddy.svg" class="sticker bottom-right" alt="" aria-hidden="true" loading="lazy">
+
                             <div class="hero-period">${period}</div>
                             <div class="hero-temp-container">
-                                <div class="hero-icon">${getWeatherIcon(current.weather)}</div>
+                                <img src="./assets/blue-buddy.svg" class="hero-icon-img" alt="可愛吉祥物" loading="lazy">
                                 <div class="hero-temp">${avgTemp}°</div>
                             </div>
                             <div class="hero-desc">${current.weather}</div>
@@ -645,25 +677,41 @@
             });
         }
         
-        // 主題切換功能
+        // 主題切換功能（預設：哆啦A夢）
         function setupThemeToggle() {
             const themeToggle = document.getElementById('themeToggle');
             const body = document.body;
             const mainTitle = document.getElementById('mainTitle');
             const pageTitle = document.getElementById('pageTitle');
-            let isDoraemon = false;
+            // 現在 :root 預設為 哆啦A夢 -> 初始狀態認定為 Doraemon（true）
+            let isDoraemon = true;
+            
+            // 初始化 UI（與 isDoraemon 同步）
+            if (isDoraemon) {
+                themeToggle.textContent = '🔵';
+                themeToggle.title = '切換至動森主題';
+                mainTitle.textContent = '🔵 多拉風格 🔴';
+                pageTitle.textContent = '多拉風格';
+            } else {
+                themeToggle.textContent = '🍃';
+                themeToggle.title = '切換至哆啦A夢主題';
+                mainTitle.textContent = '🍃 森森天氣 🍃';
+                pageTitle.textContent = '森森天氣';
+            }
             
             themeToggle.addEventListener('click', () => {
                 isDoraemon = !isDoraemon;
                 
                 if (isDoraemon) {
-                    body.classList.add('doraemon-theme');
+                    // 移除 ac-theme（動森）覆寫，回到 :root（哆啦A夢）
+                    body.classList.remove('ac-theme');
                     themeToggle.textContent = '🔵';
                     themeToggle.title = '切換至動森主題';
                     mainTitle.textContent = '🔵 多拉風格 🔴';
                     pageTitle.textContent = '多拉風格';
                 } else {
-                    body.classList.remove('doraemon-theme');
+                    // 加上 ac-theme，套用動森配色
+                    body.classList.add('ac-theme');
                     themeToggle.textContent = '🍃';
                     themeToggle.title = '切換至哆啦A夢主題';
                     mainTitle.textContent = '🍃 森森天氣 🍃';
