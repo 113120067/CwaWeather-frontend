@@ -7,7 +7,6 @@
     <title id="pageTitle">多拉風格</title>
     <link rel="icon" type="image/png" href="./icon-v2.png">
     <link rel="apple-touch-icon" href="./icon-v2.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="./icon-v2.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap"
@@ -23,40 +22,34 @@
             --ac-brown: #796452;
             --ac-blue: #4FB5D9;
             --ac-dark: #58504A;
-            --ac-card-border: #E6E0C8;
             
             /* 哆啦A夢主題（預設）*/
             --dr-blue: #0096D6;
             --dr-light-blue: #6BC5E8;
-            /* Soft Rose 替代鮮紅（方案 A）*/
-            --dr-red: #FF9AA2; /* <- 調整為柔和粉紅 */
+            /* Soft Rose 柔和粉紅 */
+            --dr-red: #FF9AA2; 
             --dr-yellow: #FFD700;
             --dr-white: #FFFFFF;
             --dr-cream: #FFF9E6;
             --dr-dark: #2C3E50;
-            --dr-pink: #FFB6C1;
-            /* 半透明疊層用色，讓粉紅更柔和 */
-            --dr-accent-alpha: rgba(255,154,162,0.12);
             
-            /* 當前主題（預設改為哆啦A夢）*/
+            /* 當前主題變數 */
             --primary-color: var(--dr-blue);
             --bg-color: var(--dr-light-blue);
-            --card-bg: var(--dr-cream);
+            --card-bg: rgba(255, 255, 255, 0.45); /* 改為半透明基底 */
             --accent-color: var(--dr-red);
             --text-color: var(--dr-dark);
             --secondary-color: var(--dr-yellow);
-            --dark-color: var(--dr-dark);
         }
         
-        /* ac-theme（動森）覆寫：當 body 加上 .ac-theme 時套用動森配色 */
+        /* ac-theme（動森）覆寫 */
         body.ac-theme {
             --primary-color: var(--ac-green);
             --bg-color: var(--ac-green);
-            --card-bg: var(--ac-cream);
+            --card-bg: rgba(255, 255, 240, 0.55); /* 動森版稍微暖一點的玻璃 */
             --accent-color: var(--ac-yellow);
             --text-color: var(--ac-brown);
             --secondary-color: var(--ac-blue);
-            --dark-color: var(--ac-dark);
         }
 
         * {
@@ -69,13 +62,12 @@
         body {
             font-family: 'Zen Maru Gothic', sans-serif;
             background-color: var(--bg-color);
-            /* 更細緻的斜紋背景 */
+            /* 斜紋背景 */
             background-image:
                 repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255, 255, 255, 0.2) 20px, rgba(255, 255, 255, 0.2) 40px);
             min-height: 100vh;
             color: var(--text-color);
             transition: background-color 0.3s ease;
-            /* 防止 iOS 左右滑動 */
             overflow-x: hidden;
             padding-bottom: 20px;
         }
@@ -88,9 +80,11 @@
             padding: 15px 20px;
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
         }
 
         .location-pill {
@@ -102,7 +96,7 @@
             font-size: 1.1rem;
             transform: rotate(-2deg);
             border: 2px solid white;
-            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
         
@@ -130,7 +124,7 @@
 
         .city-btn {
             background: rgba(255, 255, 255, 0.5);
-            color: var(--ac-brown);
+            color: var(--text-color);
             border: 2px solid white;
             padding: 8px 20px;
             border-radius: 20px;
@@ -138,17 +132,17 @@
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
         }
 
         .city-btn:active {
             transform: scale(0.95);
-            box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
         }
 
         .city-btn.active {
             background: var(--accent-color);
             transform: rotate(-2deg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         
         body.ac-theme .city-btn.active {
@@ -157,18 +151,18 @@
         
         /* 主題切換按鈕 */
         .theme-toggle {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.6);
             border: 2px solid white;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.5rem;
+            width: 44px;
+            height: 44px;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(4px);
         }
         
         .theme-toggle:active {
@@ -181,105 +175,77 @@
             font-size: 2.5rem;
             font-weight: 900;
             color: white;
-            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
-            padding: 20px 0;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+            padding: 10px 0 20px;
             margin: 0;
             transition: all 0.3s ease;
         }
         
         body.ac-theme .main-title {
             color: var(--dr-red);
-            text-shadow: 2px 2px 0 var(--dr-yellow), 4px 4px 0 rgba(0, 0, 0, 0.2);
+            text-shadow: 2px 2px 0 var(--dr-yellow), 3px 3px 0 rgba(0,0,0,0.1);
         }
 
         .container {
-            padding: 20px;
+            padding: 0 20px 20px;
             max-width: 600px;
-            /* 限制在大手機寬度 */
             margin: 0 auto;
         }
 
-        /* === 核心：今日焦點卡片 === */
+        /* === 核心：玻璃擬態 Hero Card === */
         .hero-card {
+            /* 背景改為半透明 */
             background: var(--card-bg);
+            
+            /* 模糊特效 */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            
+            /* 邊框半透明白 */
+            border: 2px solid rgba(255, 255, 255, 0.65);
+            
+            /* 陰影增加層次感 */
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.1), 
+                inset 0 0 20px rgba(255,255,255,0.2);
+            
             border-radius: 35px;
             padding: 30px 25px;
             text-align: center;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            border: 4px solid white;
             margin-bottom: 25px;
             position: relative;
-            transition: all 0.3s ease;
             overflow: hidden;
-        }
-        
-        /* 半透明疊層，讓粉紅看起來更柔和 */
-        .hero-card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background: var(--dr-accent-alpha);
-            border-radius: inherit;
-            mix-blend-mode: overlay;
+            transition: all 0.3s ease;
         }
 
-        body.ac-theme .hero-card {
-            border-radius: 20px;
-            border: 3px solid var(--dr-blue);
-            /* 如果你想放 Doraemon 背景圖案，請把下面的 data URL 補回完整內容 */
-            /* background-image: url('data:image/svg+xml,...'); */
-            background-size: 150px 150px;
-        }
-
-        /* sticker（裝飾貼紙） */
+        /* 裝飾貼紙 */
         .sticker {
             position: absolute;
-            width: 84px;
-            height: 84px;
+            width: 80px;
+            height: 80px;
             pointer-events: none;
-            opacity: 0.96;
-            transform-origin: center;
-            transition: transform 0.25s ease, opacity 0.25s ease;
-            z-index: 3;
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.08));
-            border-radius: 12px;
-            background: rgba(255,255,255,0.06);
+            opacity: 0.8;
+            z-index: 1;
         }
-        .sticker.top-left { top: 12px; left: 12px; transform: rotate(-12deg) scale(0.98); }
-        .sticker.bottom-right { bottom: 12px; right: 12px; transform: rotate(8deg) scale(0.95); }
+        .sticker.top-left { top: -10px; left: -10px; transform: rotate(-15deg); }
+        .sticker.bottom-right { bottom: -10px; right: -10px; transform: rotate(10deg); }
 
-        /* hero 圖示改成圖片 */
-        .hero-icon-img {
-            width: 120px;
-            height: 120px;
-            display: inline-block;
-            border-radius: 50%;
-            background: white;
-            padding: 6px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.12);
-            object-fit: contain;
-            z-index: 2;
+        .hero-period {
+            font-size: 1.2rem;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            margin-bottom: 5px;
+            font-weight: bold;
         }
 
         .hero-temp-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        @keyframes bounce {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
+            gap: 15px;
+            margin: 10px 0;
+            position: relative;
+            z-index: 2;
         }
 
         .hero-temp {
@@ -287,83 +253,65 @@
             font-weight: 900;
             color: var(--text-color);
             line-height: 1;
-            transition: color 0.3s ease;
+            /* 讓數字也有點玻璃光澤感 */
+            text-shadow: 2px 2px 10px rgba(255,255,255,0.5);
         }
-
+        
         .hero-desc {
-            font-size: 1.5rem;
-            color: #8A7B70;
-            margin-bottom: 20px;
+            font-size: 1.6rem;
+            color: var(--text-color);
+            margin-bottom: 25px;
             font-weight: bold;
+            opacity: 0.9;
         }
 
-        /* === 上班族最愛的：快速建議區 === */
+        /* 建議區塊 */
         .advice-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 10px;
             padding-top: 20px;
-            border-top: 2px dashed #E0D8C0;
+            border-top: 2px dashed rgba(255,255,255,0.5);
         }
 
         .advice-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: rgba(255, 255, 255, 0.5);
-            padding: 10px;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 12px;
             border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.4);
         }
         
-        body.ac-theme .advice-item {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 15px;
-        }
-
         .advice-icon {
             font-size: 2rem;
             margin-bottom: 5px;
         }
-        
-        body.ac-theme .advice-icon {
-            background: white;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 5px;
-            border: 3px solid var(--dr-blue);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-        }
 
         .advice-text {
-            font-size: 1.4rem;
-            font-weight: 900;
+            font-size: 1.2rem;
+            font-weight: 800;
             color: var(--text-color);
             margin: 5px 0;
-            line-height: 1.2;
-            transition: color 0.3s ease;
         }
 
-        /* === 稍後預報：橫向滑動區 === */
+        /* === 稍後預報：玻璃小卡 === */
         .section-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: white;
             margin-bottom: 15px;
             margin-left: 10px;
             font-weight: 900;
-            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .scroll-container {
             display: flex;
             overflow-x: auto;
             gap: 15px;
-            padding-bottom: 10px;
-            /* 隱藏滾動條但保留功能 */
+            padding-bottom: 20px; /* 預留陰影空間 */
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
@@ -374,55 +322,41 @@
 
         .mini-card {
             min-width: 140px;
-            background: rgba(255, 255, 255, 0.85);
+            /* 小卡片也要玻璃感 */
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            
             border-radius: 25px;
             padding: 20px 15px;
             text-align: center;
-            border: 3px solid white;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
             flex-shrink: 0;
-            /* 防止被擠壓 */
+        }
+        
+        .mini-card img {
+            display: block;
+            margin: 5px auto;
         }
 
         .mini-time {
             background: var(--primary-color);
             color: white;
-            padding: 3px 10px;
-            border-radius: 10px;
-            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        
-        body.ac-theme .mini-time {
-            background: var(--dr-blue);
-            border-radius: 5px;
-        }
-
-        .mini-icon {
-            font-size: 2.5rem;
-            margin: 5px 0;
-        }
-        
-        body.ac-theme .mini-icon {
-            background: white;
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 5px auto;
-            border: 3px solid var(--dr-blue);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .mini-temp {
             font-size: 1.2rem;
             font-weight: 800;
-            color: var(--dark-color);
-            transition: color 0.3s ease;
+            color: var(--text-color);
+            margin-top: 5px;
         }
 
         /* Loading 畫面 */
@@ -440,39 +374,29 @@
             z-index: 999;
             transition: background-color 0.3s ease;
         }
-
-        /* page-floating（可選，要時可啟用） */
-        .page-floating {
-          position: fixed;
-          right: 12px;
-          bottom: 12px;
-          width: 72px;
-          height: 72px;
-          opacity: 0.95;
-          z-index: 40;
-          transform: rotate(-8deg);
-          pointer-events: none;
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
         /* 響應式調整 */
         @media (max-width: 420px) {
-          .sticker { width: 56px; height: 56px; }
-          .hero-icon-img { width: 80px; height: 80px; }
-          .hero-temp { font-size: 3.2rem; }
+          .hero-temp { font-size: 3.5rem; }
         }
     </style>
 </head>
 
 <body>
     <div id="loading" class="loading-screen">
-        <div style="font-size: 4rem; animation: bounce 2s infinite;">☁️</div>
-        <p style="color: white; font-weight: bold; margin-top: 20px;">正在觀測雲的流動...</p>
+        <div style="font-size: 5rem; animation: bounce 2s infinite;">☁️</div>
+        <p style="color: white; font-weight: bold; margin-top: 20px; font-size: 1.2rem;">正在觀測雲的流動...</p>
     </div>
+    
     <div class="status-bar">
         <div class="location-pill" id="currentLocation">📍 台北</div>
         <div style="display: flex; gap: 10px; align-items: center;">
-            <!-- 預設為哆啦A夢（:root 已設定為哆啦A夢），按鈕顯示切換到動森 -->
-            <button class="theme-toggle" id="themeToggle" title="切換至動森主題">🔵</button>
+            <button class="theme-toggle" id="themeToggle" title="切換主題">🔵</button>
             <div id="updateTime" class="update-pill">更新中...</div>
         </div>
     </div>
@@ -488,11 +412,11 @@
     <div class="container" id="mainContent" style="display: none;">
 
         <div id="heroCard">
-        </div>
+            </div>
 
         <h3 class="section-title">稍後預報</h3>
         <div class="scroll-container" id="futureForecasts">
-        </div>
+            </div>
 
     </div>
 
@@ -506,14 +430,19 @@
             "yilan": "宜蘭"
         };
 
-        function getWeatherIcon(weather) {
-            if (!weather) return "🌤️";
-            if (weather.includes("晴")) return "☀️";
-            if (weather.includes("多雲")) return "⛅";
-            if (weather.includes("陰")) return "☁️";
-            if (weather.includes("雨")) return "🌧️";
-            if (weather.includes("雷")) return "⛈️";
-            return "🌤️";
+        // 新版：回傳 3D 圖片的 HTML (使用微軟 Fluent Emoji)
+        function getWeatherIcon(weather, size = 64) {
+            const baseUrl = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis";
+            let iconPath = "Travel%20and%20places/Sun%20Behind%20Cloud.png"; 
+
+            if (!weather) { /* default */ }
+            else if (weather.includes("晴") && !weather.includes("雨")) iconPath = "Travel%20and%20places/Sun.png";
+            else if (weather.includes("多雲")) iconPath = "Travel%20and%20places/Sun%20Behind%20Cloud.png";
+            else if (weather.includes("陰")) iconPath = "Travel%20and%20places/Cloud.png";
+            else if (weather.includes("雨")) iconPath = "Travel%20and%20places/Cloud%20with%20Rain.png";
+            else if (weather.includes("雷")) iconPath = "Travel%20and%20places/Cloud%20with%20Lightning%20and%20Rain.png";
+            
+            return `<img src="${baseUrl}/${iconPath}" alt="${weather}" width="${size}" style="filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); vertical-align: middle;">`;
         }
 
         function getAdvice(rainProb, maxTemp) {
@@ -551,72 +480,63 @@
             const current = forecasts[0];
             const others = forecasts.slice(1);
 
-            // 1. 渲染 Hero Card (主畫面)
             const advice = getAdvice(current.rain, current.maxTemp);
             const period = getTimePeriod(current.startTime);
             const avgTemp = Math.round((parseInt(current.maxTemp) + parseInt(current.minTemp)) / 2);
+            
+            // 大張天氣圖
+            const bigWeatherIcon = getWeatherIcon(current.weather, 130);
 
             document.getElementById('heroCard').innerHTML = `
-                        <div class="hero-card">
-                            <!-- 裝飾貼紙（純裝飾，aria-hidden） -->
-                            <img src="./assets/blue-buddy.svg" class="sticker top-left" alt="" aria-hidden="true" loading="lazy">
-                            <img src="./assets/blue-buddy.svg" class="sticker bottom-right" alt="" aria-hidden="true" loading="lazy">
-
-                            <div class="hero-period">${period}</div>
-                            <div class="hero-temp-container">
-                                <img src="./assets/blue-buddy.svg" class="hero-icon-img" alt="可愛吉祥物" loading="lazy">
-                                <div class="hero-temp">${avgTemp}°</div>
-                            </div>
-                            <div class="hero-desc">${current.weather}</div>
-                            
-                            <div class="advice-grid">
-                                <div class="advice-item">
-                                    <div class="advice-icon">${advice.rainIcon}</div>
-                                    <div class="advice-text">${advice.rainText}</div>
-                                    <div style="font-size:0.7rem; color:#999">降雨率 ${current.rain}</div>
-                                </div>
-                                <div class="advice-item">
-                                    <div class="advice-icon">${advice.clothIcon}</div>
-                                    <div class="advice-text">${advice.clothText}</div>
-                                    <div style="font-size:0.7rem; color:#999">最高溫 ${current.maxTemp}°</div>
-                                </div>
-                            </div>
+                <div class="hero-card">
+                    <div class="hero-period">${period}</div>
+                    <div class="hero-temp-container">
+                        ${bigWeatherIcon}
+                        <div class="hero-temp">${avgTemp}°</div>
+                    </div>
+                    <div class="hero-desc">${current.weather}</div>
+                    
+                    <div class="advice-grid">
+                        <div class="advice-item">
+                            <div class="advice-icon">${advice.rainIcon}</div>
+                            <div class="advice-text">${advice.rainText}</div>
+                            <div style="font-size:0.7rem; color:#666">降雨率 ${current.rain}</div>
                         </div>
-                    `;
+                        <div class="advice-item">
+                            <div class="advice-icon">${advice.clothIcon}</div>
+                            <div class="advice-text">${advice.clothText}</div>
+                            <div style="font-size:0.7rem; color:#666">最高溫 ${current.maxTemp}°</div>
+                        </div>
+                    </div>
+                </div>
+            `;
 
-            // 2. 渲染稍後預報 (包含明天判斷)
             const scrollContainer = document.getElementById('futureForecasts');
             scrollContainer.innerHTML = '';
-
-            // 抓今天的日期數字 (例如 24)
             const todayDate = new Date().getDate();
 
             others.forEach(f => {
                 let p = getTimePeriod(f.startTime);
-
-                // 判斷該預報的日期是否跟今天不同，不同就是明天
                 const fDate = new Date(f.startTime);
                 if (fDate.getDate() !== todayDate) {
                     p = "明天" + p;
                 }
 
                 scrollContainer.innerHTML += `
-                            <div class="mini-card">
-                                <div class="mini-time">${p}</div>
-                                <div class="mini-icon">${getWeatherIcon(f.weather)}</div>
-                                <div class="mini-temp">${f.minTemp}° - ${f.maxTemp}°</div>
-                                <div style="font-size:0.8rem; color:#888; margin-top:5px;">💧${f.rain}</div>
-                            </div>
-                        `;
+                    <div class="mini-card">
+                        <div class="mini-time">${p}</div>
+                        <div class="mini-icon">${getWeatherIcon(f.weather, 60)}</div>
+                        <div class="mini-temp">${f.minTemp}° - ${f.maxTemp}°</div>
+                        <div style="font-size:0.8rem; color:#666; margin-top:5px;">💧${f.rain}</div>
+                    </div>
+                `;
             });
 
-            // 3. 右上角顯示今日日期
             const now = new Date();
             const month = now.getMonth() + 1;
             const date = now.getDate();
             const dayIndex = now.getDay();
             const days = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
-
             document.getElementById('updateTime').textContent = `${month}月${date}日 ${days[dayIndex]}`;
         }
 
@@ -629,24 +549,15 @@
                     document.getElementById('mainContent').style.display = 'none';
                 }
 
-                // 1. 定義「最低等待時間」：1500 毫秒 (1.5秒)
-                const delayPromise = new Promise(resolve => setTimeout(resolve, showLoading ? 1500 : 300));
-
-                // 2. 定義「抓取資料」的工作
+                const delayPromise = new Promise(resolve => setTimeout(resolve, showLoading ? 1000 : 300));
                 const fetchPromise = fetch(apiUrl).then(res => res.json());
 
-                // 3. Promise.all 會等待「兩個都完成」才會往下走
-                // result 陣列裡，第一個是 delay 的結果(沒用到)，第二個是 api 的 json 資料
                 const [_, json] = await Promise.all([delayPromise, fetchPromise]);
 
                 if (json.success) {
                     currentCity = city;
                     renderWeather(json.data);
-                    
-                    // 更新地點顯示
                     document.getElementById('currentLocation').textContent = `📍 ${cityNames[city]}`;
-
-                    // 資料處理好後，隱藏 Loading，顯示主畫面
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('mainContent').style.display = 'block';
                 } else {
@@ -654,66 +565,47 @@
                 }
             } catch (e) {
                 console.error(e);
-                alert("天氣資料讀取失敗，狸克把網路線咬斷了！");
+                alert("天氣資料讀取失敗，可能是連線問題！");
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('mainContent').style.display = 'block';
             }
         }
 
-        // 城市按鈕點擊事件
         function setupCityButtons() {
             const buttons = document.querySelectorAll('.city-btn');
             buttons.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const city = btn.dataset.city;
-                    
-                    // 更新按鈕狀態
                     buttons.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    
-                    // 載入該城市天氣
                     fetchWeather(city, false);
                 });
             });
         }
         
-        // 主題切換功能（預設：哆啦A夢）
         function setupThemeToggle() {
             const themeToggle = document.getElementById('themeToggle');
             const body = document.body;
             const mainTitle = document.getElementById('mainTitle');
             const pageTitle = document.getElementById('pageTitle');
-            // 現在 :root 預設為 哆啦A夢 -> 初始狀態認定為 Doraemon（true）
+            
             let isDoraemon = true;
             
-            // 初始化 UI（與 isDoraemon 同步）
             if (isDoraemon) {
                 themeToggle.textContent = '🔵';
-                themeToggle.title = '切換至動森主題';
                 mainTitle.textContent = '🔵 多拉風格 🔴';
-                pageTitle.textContent = '多拉風格';
-            } else {
-                themeToggle.textContent = '🍃';
-                themeToggle.title = '切換至哆啦A夢主題';
-                mainTitle.textContent = '🍃 森森天氣 🍃';
-                pageTitle.textContent = '森森天氣';
             }
             
             themeToggle.addEventListener('click', () => {
                 isDoraemon = !isDoraemon;
-                
                 if (isDoraemon) {
-                    // 移除 ac-theme（動森）覆寫，回到 :root（哆啦A夢）
                     body.classList.remove('ac-theme');
                     themeToggle.textContent = '🔵';
-                    themeToggle.title = '切換至動森主題';
                     mainTitle.textContent = '🔵 多拉風格 🔴';
                     pageTitle.textContent = '多拉風格';
                 } else {
-                    // 加上 ac-theme，套用動森配色
                     body.classList.add('ac-theme');
                     themeToggle.textContent = '🍃';
-                    themeToggle.title = '切換至哆啦A夢主題';
                     mainTitle.textContent = '🍃 森森天氣 🍃';
                     pageTitle.textContent = '森森天氣';
                 }
